@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 const Sign = () => {
 const navigate = useNavigate();
 const [emailcount, setEmail] = useState('');
-  const [passwordCount, setPassword] = useState('');
+  const [passwordCount, setPassword] = useState('')
+  const [toastMessage, setToastMessage] = useState("");
+  ;
 
   const [formSign, setFormDataSign] = useState({
     userName: '',
@@ -44,9 +46,27 @@ const [emailcount, setEmail] = useState('');
       setError('Password must be at least 6 characters');
       return;
     }
+    if (!formSign.name) {
+      setError('name is required');
+      return;
+    }
+    if (!formSign.userName) {
+      setError('User Name is required');
+      return;
+    }
+    if (!formSign.userName.startsWith('@')) {
+      setError('User Name must start with @');
+      return;
+    }
+    if (!formSign.image) {
+      setError('image URL is required');
+      return;
+    }
     setError('');
     try {
       const response = await axios.post('https://6682c0824102471fa4c81b49.mockapi.io/users', formSign);
+      setToastMessage("User Sign Up Successfully");
+
   
     } catch (error) {
       console.error(error);
@@ -225,6 +245,11 @@ const [emailcount, setEmail] = useState('');
                 required
                 placeholder='******'
               />
+                    {toastMessage && (
+            <div className="alert alert-info p-4 mt-4 bg-blue-100 rounded-lg shadow-lg text-blue-700">
+              <span>{toastMessage}</span>
+            </div>
+        )}
             </div>
             <div className="modal-action">
               <button type="submit" onClick={handleSubmit} className="btn bg-sky-500 hover:bg-sky-600 text-white rounded-lg px-4 py-2">

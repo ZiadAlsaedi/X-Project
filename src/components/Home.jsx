@@ -45,7 +45,8 @@ const Home = () => {
         tweet: tweet,
         likedBy:[]
       });
-      setToastMessage("Post Added Successfully");
+      window.location.reload();
+
 
     } catch (error) {
       console.error('Error adding project:', error);
@@ -64,14 +65,7 @@ const Home = () => {
       });
   }, []);
 
-  const handleDeleteTweet = async (id) => {
-    try {
-      await axios.delete(`https://6682c0824102471fa4c81b49.mockapi.io/tweet/${id}`);
-      setTweets(tweets.filter(tweet => tweet.id !== id));
-    } catch (error) {
-      console.error('Error deleting project:', error);
-    }
-  };
+
   const fetchTweets = () => {
     axios.get('https://6682c0824102471fa4c81b49.mockapi.io/tweet')
       .then(response => {
@@ -136,7 +130,7 @@ const Home = () => {
 <img className='w-10 h-10 rounded-full mr-2 ml-4 ' src={users.image} />
 <input 
 type="text" 
-className='w-[30vw] bg-primary'
+className='w-[30vw] bg-primary max-sm:w-full'
 placeholder='What is happening ?!'
 value={tweet}
 onChange={(e) => setTweet(e.target.value)}
@@ -164,7 +158,7 @@ onChange={(e) => setTweet(e.target.value)}
       </svg>
 
     <button 
-    className=" h-7 w-16 ml-12 text-white bg-sky-500 hover:bg-sky-600 rounded-3xl"
+    className=" h-7 w-16 ml-12 max-sm:ml-5 text-white bg-sky-500 hover:bg-sky-600 rounded-3xl"
     onClick={handleAddPost}
 
     >Post</button>
@@ -174,7 +168,7 @@ onChange={(e) => setTweet(e.target.value)}
 
   </div>
   <div className='contianer'>
-  {tweets.map((user, index) => (
+  {tweets.slice().reverse().map((user, index) => (
 
   <div  key={user.id}  className='tweet w-full border border-gray-700  rounded-lg p-4  text-white'>
   <div className='head flex justify-between mb-2'>
@@ -202,23 +196,7 @@ onChange={(e) => setTweet(e.target.value)}
           d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"
         />
       </svg>
-      {showMenu && (
-        <div style={{
-          position: 'absolute',
-          top: '15px',
-          right: '40px',
-          backgroundColor: 'primary',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          zIndex: '1000',
-          width:"20px"
-        }}>
-          <button 
-          className="btn hover:bg-red-950"
-          onClick={() => handleDeleteTweet(user.id)}
 
-           >Delete</button>
-        </div>
-      )}
     </div>
 </div>
 
